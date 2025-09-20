@@ -1,0 +1,82 @@
+<div>
+    <!-- Summary -->
+    <div class="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-6 mb-8">
+        <div class="flex items-center justify-between flex-wrap gap-4">
+            <div class="flex items-center space-x-3">
+                <i data-lucide="trending-down" class="h-8 w-8 text-green-600"></i>
+                <div>
+                    <h3 class="text-xl font-bold text-green-800">Best Deal Found!</h3>
+                    <p class="text-green-700">Save up to ${{ "%.2f"|format(savings) }} by choosing the right store</p>
+                </div>
+            </div>
+            <div class="text-right">
+                <p class="text-2xl font-bold text-green-600">${{ "%.2f"|format(results[0].price) }}</p>
+                <p class="text-sm text-green-700">at {{ results[0].store }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Grid -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for result in results %}
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden border-2 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 {% if loop.index0 == 0 %}border-green-400 ring-2 ring-green-100{% else %}border-gray-200{% endif %}">
+            {% if loop.index0 == 0 %}
+            <div class="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 py-2 text-center font-semibold">
+                🏆 Best Deal
+            </div>
+            {% endif %}
+            
+            <div class="p-6">
+                <!-- Store Header -->
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 {{ result.store_color }} rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold text-sm">
+                                {{ result.store[0] }}
+                            </span>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800">{{ result.store }}</h3>
+                            <div class="flex items-center space-x-1">
+                                <i data-lucide="star" class="h-4 w-4 text-yellow-400 fill-current"></i>
+                                <span class="text-sm text-gray-600">{{ result.rating }} ({{ "{:,}".format(result.reviews) }})</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-2 py-1 rounded-full text-xs font-medium {% if result.in_stock %}bg-green-100 text-green-800{% else %}bg-red-100 text-red-800{% endif %}">
+                        {{ 'In Stock' if result.in_stock else 'Out of Stock' }}
+                    </div>
+                </div>
+
+                <!-- Product Image -->
+                <div class="bg-gray-50 rounded-lg p-4 mb-4">
+                    <img 
+                        src="{{ result.image }}" 
+                        alt="{{ product }}"
+                        class="w-full h-24 object-contain"
+                    />
+                </div>
+
+                <!-- Price Information -->
+                <div class="mb-4">
+                    <div class="flex items-baseline space-x-2">
+                        <span class="text-2xl font-bold text-gray-800">${{ "%.2f"|format(result.price) }}</span>
+                        <span class="text-sm text-gray-500 line-through">${{ "%.2f"|format(result.original_price) }}</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-1">{{ result.shipping }}</p>
+                </div>
+
+                <!-- Action Button -->
+                <a
+                    href="{{ result.url }}"
+                    target="_blank"
+                    class="block w-full py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center space-x-2 {% if result.in_stock %}bg-blue-500 hover:bg-blue-600 text-white{% else %}bg-gray-200 text-gray-500 cursor-not-allowed{% endif %}"
+                >
+                    <i data-lucide="external-link" class="h-4 w-4"></i>
+                    <span>{{ 'View Deal' if result.in_stock else 'Out of Stock' }}</span>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
