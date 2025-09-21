@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fashion Price Comparison</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .loading-spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #3b82f6;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .product-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .error-message {
+            background: #fee2e2;
+            border: 1px solid #fca5a5;
+            color: #dc2626;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+        }
+        .success-message {
+            background: #dcfce7;
+            border: 1px solid #86efac;
+            color: #166534;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-6">
+            <h1 class="text-3xl font-bold text-gray-800 flex items-center">
+                <i class="fas fa-tshirt mr-3 text-pink-500"></i>Fashion Price Comparison
+            </h1>
+            <p class="text-gray-600 mt-2">Compare prices across top fashion retailers</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- Search Form -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Search for Products</h2>
+            <form id="searchForm" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div>
+                    <label for="productName" class="block text-sm font-medium text-gray-700 mb-1">Product Name *</label>
+                    <input type="text" id="productName" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="e.g., floral mini dress">
+                </div>
+                <div>
+                    <label for="brand" class="block text-sm font-medium text-gray-700 mb-1">Brand (Optional)</label>
+                    <input type="text" id="brand" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="e.g., Zara">
+                </div>
+                <div>
+                    <label for="category" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                    <select id="category" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="dresses">Dresses</option>
+                        <option value="tops">Tops</option>
+                        <option value="jeans">Jeans</option>
+                        <option value="shoes">Shoes</option>
+                        <option value="accessories">Accessories</option>
+                        <option value="shirts">Shirts</option>
+                        <option value="kurtas">Kurtas</option>
+                        <option value="sarees">Sarees</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="color" class="block text-sm font-medium text-gray-700 mb-1">Color (Optional)</label>
+                    <input type="text" id="color" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="e.g., blue">
+                </div>
+                <div>
+                    <label for="gender" class="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+                    <select id="gender" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="men">Men</option>
+                        <option value="women" selected>Women</option>
+                        <option value="unisex">Unisex</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="maxPrice" class="block text-sm font-medium text-gray-700 mb-1">Max Price (₹) (Optional)</label>
+                    <input type="number" id="maxPrice" min="0" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="e.g., 5000">
+                </div>
+                <div class="md:col-span-2 lg:col-span-3 flex justify-end mt-4">
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-md flex items-center">
+                        <i class="fas fa-search mr-2"></i> Search
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Results Section -->
+        <div id="resultsSection" class="hidden">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Search Results</h2>
+                <div id="resultCount" class="text-gray-600"></div>
+            </div>
+
+            <!-- Loading Indicator -->
+            <div id="loadingIndicator" class="hidden py-12">
+                <div class="loading-spinner"></div>
+                <p class="text-center text-gray-600 mt-4">Searching across stores. This may take a moment...</p>
+            </div>
+
+            <!-- Error Messages -->
+            <div id="errorMessage" class="hidden error-message">
+                <i class="fas fa-exclamation-triangle mr-2"></i>
+                <span id="errorText">Something went wrong. Please try again.</span>
+            </div>
+
+            <!-- Results Grid -->
+            <div id="resultsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+            <!-- No Results Message -->
+            <div id="noResults" class="hidden text-center py-12">
+                <i class="fas fa-search fa-3x text-gray-300 mb-4"></i>
+                <h3 class="text-xl font-semibold text-gray-700">No products found</h3>
+                <p class="text-gray-500 mt-2">Try adjusting your search criteria or check your spelling</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 text-white mt-12 py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2024 Fashion Price Comparison. All rights reserved.</p>
+            <p class="text-sm text-gray-400 mt-2">Compare prices from Myntra, Amazon, Flipkart, and Ajio</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const filters = {
+                name: document.getElementById('productName').value,
+                brand: document.getElementById('brand').value || null,
+                category: document.getElementById('category').value,
+                color: document.getElementById('color').value || null,
+                gender: document.getElementById('gender').value,
+                max_price: document.getElementById('maxPrice').value ? parseFloat(document.getElementById('maxPrice').value) : null
+            };
+            
+            // Show results section and loading indicator
+            document.getElementById('resultsSection').classList.remove('hidden');
+            document.getElementById('loadingIndicator').classList.remove('hidden');
+            document.getElementById('resultsGrid').innerHTML = '';
+            document.getElementById('noResults').classList.add('hidden');
+            document.getElementById('errorMessage').classList.add('hidden');
+            
+            try {
+                console.log('Searching with filters:', filters);
+                
+                // Call the backend API
+                const response = await fetch('http://localhost:8000/api/search', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(filters)
+                });
+                
+                console.log('Response status:', response.status);
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.detail || `HTTP error! status: ${response.status}`);
+                }
+                
+                const results = await response.json();
+                console.log('Results received:', results.length);
+                
+                // Hide loading indicator
+                document.getElementById('loadingIndicator').classList.add('hidden');
+                
+                // Update result count
+                document.getElementById('resultCount').textContent = `${results.length} products found`;
+                
+                if (results.length === 0) {
+                    document.getElementById('noResults').classList.remove('hidden');
+                    return;
+                }
+                
+                // Display results
+                const resultsGrid = document.getElementById('resultsGrid');
+                results.forEach((product, index) => {
+                    const productCard = document.createElement('div');
+                    productCard.className = 'product-card bg-white rounded-lg shadow-md overflow-hidden';
+                    
+                    // Format price with Indian Rupee symbol
+                    const formattedPrice = new Intl.NumberFormat('en-IN', {
+                        style: 'currency',
+                        currency: 'INR',
+                        maximumFractionDigits: 0
+                    }).format(product.price);
+                    
+                    let originalPriceHtml = '';
+                    if (product.original_price && product.original_price > product.price) {
+                        const formattedOriginalPrice = new Intl.NumberFormat('en-IN', {
+                            style: 'currency',
+                            currency: 'INR',
+                            maximumFractionDigits: 0
+                        }).format(product.original_price);
+                        originalPriceHtml = `<div class="text-sm text-gray-500 line-through ml-2">${formattedOriginalPrice}</div>`;
+                    }
+                    
+                    let discountHtml = '';
+                    if (product.discount_percentage && product.discount_percentage > 0) {
+                        discountHtml = `<span class="bg-red-500 text-white text-xs font-semibold px-2 py-1 absolute top-2 right-2 rounded">${product.discount_percentage}% OFF</span>`;
+                    }
+                    
+                    let ratingHtml = '';
+                    if (product.rating) {
+                        const fullStars = Math.floor(product.rating);
+                        const hasHalfStar = product.rating % 1 >= 0.5;
+                        const emptyStars = 5 - Math.ceil(product.rating);
+                        
+                        ratingHtml = `
+                            <div class="flex items-center mt-2">
+                                <div class="text-yellow-400 text-sm">
+                                    ${'★'.repeat(fullStars)}${hasHalfStar ? '☆' : ''}${'☆'.repeat(emptyStars)}
+                                </div>
+                                <span class="text-gray-600 text-sm ml-1">(${product.rating})</span>
+                            </div>
+                        `;
+                    }
+                    
+                    // Ensure we have a valid product URL
+                    const productUrl = product.product_url || '#';
+                    const hasValidUrl = productUrl !== '#' && productUrl !== '';
+                    
+                    productCard.innerHTML = `
+                        <div class="relative">
+                            <img src="${product.image_url || 'https://via.placeholder.com/300x400?text=No+Image'}" 
+                                 alt="${product.title}" 
+                                 class="w-full h-48 object-cover"
+                                 onerror="this.src='https://via.placeholder.com/300x400?text=No+Image'">
+                            <span class="${product.store_color} text-white text-xs font-semibold px-2 py-1 absolute top-2 left-2 rounded">${product.store_name}</span>
+                            ${discountHtml}
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-lg text-gray-800 line-clamp-2 mb-2" title="${product.title}">${product.title}</h3>
+                            <div class="flex items-center">
+                                <div class="text-xl font-bold text-gray-900">${formattedPrice}</div>
+                                ${originalPriceHtml}
+                            </div>
+                            ${ratingHtml}
+                            <div class="mt-4 flex justify-between items-center">
+                                ${hasValidUrl ? 
+                                    `<a href="${productUrl}" target="_blank" rel="noopener noreferrer" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded transition-colors">
+                                        <i class="fas fa-external-link-alt mr-1"></i>View Product
+                                    </a>` :
+                                    `<span class="text-gray-500 text-sm">Link not available</span>`
+                                }
+                                <span class="text-xs text-gray-500">${product.shipping_info || 'Check shipping'}</span>
+                            </div>
+                        </div>
+                    `;
+                    
+                    resultsGrid.appendChild(productCard);
+                });
+                
+                // Show success message
+                console.log('Products displayed successfully');
+                
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('loadingIndicator').classList.add('hidden');
+                document.getElementById('errorMessage').classList.remove('hidden');
+                document.getElementById('errorText').textContent = error.message || 'Failed to load products. Please check if the backend server is running on localhost:8000';
+            }
+        });
+
+        // Add some example searches for demonstration
+        function fillExampleSearch(productName, brand = '', category = 'dresses') {
+            document.getElementById('productName').value = productName;
+            document.getElementById('brand').value = brand;
+            document.getElementById('category').value = category;
+        }
+
+        // Add example buttons (optional)
+        document.addEventListener('DOMContentLoaded', function() {
+            // You can add example search buttons here if needed
+            console.log('Fashion Price Comparison App loaded successfully');
+        });
+    </script>
+</body>
+</html>
