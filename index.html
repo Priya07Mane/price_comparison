@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fashion Price Comparison - Find Best Deals</title>
+    <title>AI Fashion Finder - Image & Price Comparison</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -40,120 +40,52 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
         
-        .error-message {
-            background: #fee2e2;
-            border: 1px solid #fca5a5;
-            color: #dc2626;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            margin: 1rem 0;
-            animation: fadeIn 0.3s ease;
+        .upload-zone {
+            border: 3px dashed #cbd5e0;
+            transition: all 0.3s ease;
+            background: #f7fafc;
         }
         
-        .success-badge {
-            background: #dcfce7;
-            color: #166534;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.875rem;
-            font-weight: 600;
-        }
-        
-        .store-badge {
-            position: absolute;
-            top: 0.5rem;
-            left: 0.5rem;
-            padding: 0.25rem 0.75rem;
-            border-radius: 0.375rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: white;
-            z-index: 10;
-        }
-        
-        .discount-badge {
-            position: absolute;
-            top: 0.5rem;
-            right: 0.5rem;
-            background: #ef4444;
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 0.375rem;
-            font-size: 0.75rem;
-            font-weight: 700;
-            z-index: 10;
-        }
-        
-        .image-container {
-            position: relative;
-            overflow: hidden;
-            background: #f3f4f6;
-        }
-        
-        .image-container img {
-            transition: transform 0.3s ease;
-        }
-        
-        .product-card:hover .image-container img {
-            transform: scale(1.05);
-        }
-        
-        .search-form-container {
-            background: white;
-            border-radius: 1rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-        
-        input:focus, select:focus {
-            outline: none;
+        .upload-zone:hover, .upload-zone.dragover {
             border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: #edf2f7;
         }
         
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .tab-button {
             transition: all 0.3s ease;
         }
         
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(102, 126, 234, 0.4);
+        .tab-button.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
         }
         
-        .example-chip {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background: #f3f4f6;
+        .ai-badge {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 0.25rem 0.75rem;
             border-radius: 9999px;
-            font-size: 0.875rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            margin: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
         }
         
-        .example-chip:hover {
-            background: #e5e7eb;
-            transform: translateY(-2px);
+        .preview-image {
+            max-width: 300px;
+            max-height: 300px;
+            object-fit: contain;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         
-        .rating-stars {
-            color: #fbbf24;
-        }
-        
-        .line-clamp-2 {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        
-        .pulse-animation {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+        .analysis-card {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border: 2px solid #667eea50;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin: 1rem 0;
         }
     </style>
 </head>
@@ -164,19 +96,19 @@
             <div class="flex items-center justify-between">
                 <div>
                     <h1 class="text-4xl font-bold text-white flex items-center">
-                        <i class="fas fa-shopping-bag mr-3"></i>
-                        Fashion Finder
+                        <i class="fas fa-magic mr-3"></i>
+                        AI Fashion Finder
                     </h1>
-                    <p class="text-purple-100 mt-2">Compare prices across top fashion retailers instantly</p>
+                    <p class="text-purple-100 mt-2">Upload a photo or search by text - AI-powered price comparison</p>
                 </div>
                 <div class="hidden md:flex items-center space-x-4 text-white">
                     <div class="text-center">
-                        <i class="fas fa-store text-2xl mb-1"></i>
-                        <p class="text-xs">3+ Stores</p>
+                        <i class="fas fa-brain text-2xl mb-1"></i>
+                        <p class="text-xs">AI Powered</p>
                     </div>
                     <div class="text-center">
-                        <i class="fas fa-tags text-2xl mb-1"></i>
-                        <p class="text-xs">Best Deals</p>
+                        <i class="fas fa-store text-2xl mb-1"></i>
+                        <p class="text-xs">3+ Stores</p>
                     </div>
                     <div class="text-center">
                         <i class="fas fa-bolt text-2xl mb-1"></i>
@@ -188,69 +120,102 @@
     </header>
 
     <main class="container mx-auto px-4 py-8">
-        <!-- Quick Examples -->
-        <div class="mb-6 text-center">
-            <p class="text-gray-600 mb-3">Try these popular searches:</p>
-            <div class="flex flex-wrap justify-center">
-                <span class="example-chip" onclick="fillExample('floral dress', '', 'dresses', 'pink')">
-                    <i class="fas fa-search mr-1"></i> Floral Dress
-                </span>
-                <span class="example-chip" onclick="fillExample('denim jeans', '', 'jeans', 'blue')">
-                    <i class="fas fa-search mr-1"></i> Denim Jeans
-                </span>
-                <span class="example-chip" onclick="fillExample('kurta', '', 'kurtas', '')">
-                    <i class="fas fa-search mr-1"></i> Kurtas
-                </span>
-                <span class="example-chip" onclick="fillExample('casual shoes', '', 'shoes', '')">
-                    <i class="fas fa-search mr-1"></i> Casual Shoes
-                </span>
-                <span class="example-chip" onclick="fillExample('shirt', '', 'shirts', 'white')">
-                    <i class="fas fa-search mr-1"></i> White Shirt
-                </span>
+        <!-- Tab Selection -->
+        <div class="flex justify-center mb-8">
+            <div class="bg-white rounded-lg shadow-md p-2 flex gap-2">
+                <button id="imageTabBtn" class="tab-button active px-6 py-3 rounded-lg font-semibold" onclick="switchTab('image')">
+                    <i class="fas fa-camera mr-2"></i> Search by Image
+                </button>
+                <button id="textTabBtn" class="tab-button px-6 py-3 rounded-lg font-semibold" onclick="switchTab('text')">
+                    <i class="fas fa-keyboard mr-2"></i> Search by Text
+                </button>
             </div>
         </div>
 
-        <!-- Search Form -->
-        <div class="search-form-container p-8 mb-8">
+        <!-- Image Search Section -->
+        <div id="imageSearchSection" class="bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                <i class="fas fa-image mr-3 text-purple-600"></i>
+                Upload Fashion Item
+                <span class="ai-badge ml-3">
+                    <i class="fas fa-sparkles"></i> AI Analysis
+                </span>
+            </h2>
+            
+            <!-- Upload Zone -->
+            <div id="uploadZone" class="upload-zone rounded-xl p-12 text-center mb-6 cursor-pointer">
+                <input type="file" id="imageInput" accept="image/*" class="hidden">
+                <i class="fas fa-cloud-upload-alt text-6xl text-gray-400 mb-4"></i>
+                <p class="text-xl font-semibold text-gray-700 mb-2">Drop your image here or click to browse</p>
+                <p class="text-gray-500">Supports: JPG, PNG (Max 10MB)</p>
+            </div>
+
+            <!-- Image Preview -->
+            <div id="imagePreview" class="hidden text-center mb-6">
+                <img id="previewImg" class="preview-image mx-auto mb-4">
+                <button onclick="clearImage()" class="text-red-500 hover:text-red-700 font-semibold">
+                    <i class="fas fa-times-circle mr-1"></i> Remove Image
+                </button>
+            </div>
+
+            <!-- AI Analysis Result -->
+            <div id="aiAnalysis" class="hidden analysis-card">
+                <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-brain mr-2 text-purple-600"></i>
+                    AI Analysis Result
+                </h3>
+                <div id="analysisContent" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+            </div>
+
+            <!-- Additional Filters -->
+            <div id="imageFilters" class="hidden grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        <i class="fas fa-copyright mr-1"></i> Brand (Optional)
+                    </label>
+                    <input type="text" id="imageBrand" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg" placeholder="e.g., Zara, H&M">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        <i class="fas fa-rupee-sign mr-1"></i> Max Price (₹)
+                    </label>
+                    <input type="number" id="imageMaxPrice" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg" placeholder="e.g., 5000">
+                </div>
+            </div>
+
+            <!-- Search Button -->
+            <div id="imageSearchBtn" class="hidden text-center mt-6">
+                <button onclick="searchByImage()" class="gradient-bg text-white font-bold py-4 px-12 rounded-lg text-lg hover:shadow-xl transition-all">
+                    <i class="fas fa-search mr-3"></i> Find Similar Products
+                </button>
+            </div>
+        </div>
+
+        <!-- Text Search Section -->
+        <div id="textSearchSection" class="hidden bg-white rounded-xl shadow-lg p-8 mb-8">
             <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
                 <i class="fas fa-filter mr-3 text-purple-600"></i>
                 Search Products
             </h2>
             <form id="searchForm" class="space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Product Name -->
                     <div>
                         <label for="productName" class="block text-sm font-semibold text-gray-700 mb-2">
                             <i class="fas fa-tag mr-1"></i> Product Name *
                         </label>
-                        <input 
-                            type="text" 
-                            id="productName" 
-                            required 
-                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg transition-all"
-                            placeholder="e.g., floral mini dress"
-                        >
+                        <input type="text" id="productName" required class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg" placeholder="e.g., floral mini dress">
                     </div>
-
-                    <!-- Brand -->
                     <div>
                         <label for="brand" class="block text-sm font-semibold text-gray-700 mb-2">
-                            <i class="fas fa-copyright mr-1"></i> Brand (Optional)
+                            <i class="fas fa-copyright mr-1"></i> Brand
                         </label>
-                        <input 
-                            type="text" 
-                            id="brand" 
-                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg transition-all"
-                            placeholder="e.g., Zara, H&M"
-                        >
+                        <input type="text" id="brand" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg" placeholder="e.g., Zara, H&M">
                     </div>
-
-                    <!-- Category -->
                     <div>
                         <label for="category" class="block text-sm font-semibold text-gray-700 mb-2">
                             <i class="fas fa-list mr-1"></i> Category
                         </label>
-                        <select id="category" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg transition-all">
+                        <select id="category" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg">
                             <option value="dresses">Dresses</option>
                             <option value="tops">Tops</option>
                             <option value="jeans">Jeans</option>
@@ -261,55 +226,32 @@
                             <option value="sarees">Sarees</option>
                         </select>
                     </div>
-
-                    <!-- Color -->
                     <div>
                         <label for="color" class="block text-sm font-semibold text-gray-700 mb-2">
-                            <i class="fas fa-palette mr-1"></i> Color (Optional)
+                            <i class="fas fa-palette mr-1"></i> Color
                         </label>
-                        <input 
-                            type="text" 
-                            id="color" 
-                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg transition-all"
-                            placeholder="e.g., blue, red"
-                        >
+                        <input type="text" id="color" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg" placeholder="e.g., blue, red">
                     </div>
-
-                    <!-- Gender -->
                     <div>
                         <label for="gender" class="block text-sm font-semibold text-gray-700 mb-2">
                             <i class="fas fa-venus-mars mr-1"></i> Gender
                         </label>
-                        <select id="gender" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg transition-all">
+                        <select id="gender" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg">
                             <option value="women" selected>Women</option>
                             <option value="men">Men</option>
                             <option value="unisex">Unisex</option>
                         </select>
                     </div>
-
-                    <!-- Max Price -->
                     <div>
                         <label for="maxPrice" class="block text-sm font-semibold text-gray-700 mb-2">
                             <i class="fas fa-rupee-sign mr-1"></i> Max Price (₹)
                         </label>
-                        <input 
-                            type="number" 
-                            id="maxPrice" 
-                            min="0" 
-                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg transition-all"
-                            placeholder="e.g., 5000"
-                        >
+                        <input type="number" id="maxPrice" min="0" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg" placeholder="e.g., 5000">
                     </div>
                 </div>
-
-                <!-- Submit Button -->
                 <div class="flex justify-center mt-8">
-                    <button 
-                        type="submit" 
-                        class="btn-primary text-white font-bold py-4 px-12 rounded-lg flex items-center text-lg"
-                    >
-                        <i class="fas fa-search mr-3"></i> 
-                        Search Products
+                    <button type="submit" class="gradient-bg text-white font-bold py-4 px-12 rounded-lg flex items-center text-lg hover:shadow-xl transition-all">
+                        <i class="fas fa-search mr-3"></i> Search Products
                     </button>
                 </div>
             </form>
@@ -317,114 +259,233 @@
 
         <!-- Results Section -->
         <div id="resultsSection" class="hidden">
-            <!-- Results Header -->
             <div class="flex flex-col md:flex-row justify-between items-center mb-8 bg-white p-6 rounded-lg shadow-md">
                 <div>
                     <h2 class="text-3xl font-bold text-gray-800 mb-2">Search Results</h2>
                     <p id="resultCount" class="text-gray-600"></p>
                 </div>
-                <div class="flex items-center space-x-4 mt-4 md:mt-0">
-                    <span class="success-badge">
-                        <i class="fas fa-check mr-1"></i> Live Prices
-                    </span>
-                    <button 
-                        onclick="location.reload()" 
-                        class="text-purple-600 hover:text-purple-800 font-semibold"
-                    >
-                        <i class="fas fa-redo mr-1"></i> New Search
-                    </button>
-                </div>
+                <button onclick="location.reload()" class="text-purple-600 hover:text-purple-800 font-semibold mt-4 md:mt-0">
+                    <i class="fas fa-redo mr-1"></i> New Search
+                </button>
             </div>
 
-            <!-- Loading Indicator -->
             <div id="loadingIndicator" class="hidden py-16">
                 <div class="loading-spinner mb-6"></div>
-                <p class="text-center text-gray-600 text-lg font-semibold pulse-animation">
-                    <i class="fas fa-shopping-cart mr-2"></i>
-                    Searching across stores...
+                <p class="text-center text-gray-600 text-lg font-semibold">
+                    <i class="fas fa-brain mr-2"></i>
+                    <span id="loadingText">Analyzing image with AI...</span>
                 </p>
-                <p class="text-center text-gray-500 mt-2">This may take 10-20 seconds</p>
             </div>
 
-            <!-- Error Messages -->
-            <div id="errorMessage" class="hidden error-message">
+            <div id="errorMessage" class="hidden bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg mb-6">
                 <i class="fas fa-exclamation-triangle mr-2"></i>
-                <span id="errorText">Something went wrong. Please try again.</span>
+                <span id="errorText"></span>
             </div>
 
-            <!-- Results Grid -->
             <div id="resultsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
 
-            <!-- No Results Message -->
             <div id="noResults" class="hidden text-center py-16">
                 <i class="fas fa-search fa-4x text-gray-300 mb-6"></i>
                 <h3 class="text-2xl font-bold text-gray-700 mb-2">No products found</h3>
-                <p class="text-gray-500 mb-6">Try adjusting your search criteria or check your spelling</p>
-                <button 
-                    onclick="location.reload()" 
-                    class="btn-primary text-white font-semibold py-3 px-8 rounded-lg"
-                >
+                <p class="text-gray-500 mb-6">Try adjusting your search criteria</p>
+                <button onclick="location.reload()" class="gradient-bg text-white font-semibold py-3 px-8 rounded-lg">
                     <i class="fas fa-redo mr-2"></i> Try Another Search
                 </button>
             </div>
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white mt-16 py-12">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-                <div>
-                    <h3 class="text-xl font-bold mb-4">
-                        <i class="fas fa-shopping-bag mr-2"></i> Fashion Finder
-                    </h3>
-                    <p class="text-gray-400">
-                        Compare fashion prices across multiple stores and save money on your favorite items.
-                    </p>
-                </div>
-                <div>
-                    <h3 class="text-xl font-bold mb-4">Supported Stores</h3>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><i class="fas fa-store mr-2"></i> Myntra</li>
-                        <li><i class="fas fa-store mr-2"></i> Amazon India</li>
-                        <li><i class="fas fa-store mr-2"></i> Flipkart</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-xl font-bold mb-4">Features</h3>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><i class="fas fa-bolt mr-2"></i> Real-time price comparison</li>
-                        <li><i class="fas fa-filter mr-2"></i> Advanced filtering</li>
-                        <li><i class="fas fa-chart-line mr-2"></i> Price sorting</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="border-t border-gray-700 pt-8 text-center">
-                <p class="text-gray-400">
-                    &copy; 2024 Fashion Finder. Built with 
-                    <i class="fas fa-heart text-red-500"></i> for smart shoppers
-                </p>
-            </div>
-        </div>
-    </footer>
-
     <script>
-        // Fill example search
-        function fillExample(name, brand, category, color) {
-            document.getElementById('productName').value = name;
-            document.getElementById('brand').value = brand;
-            document.getElementById('category').value = category;
-            document.getElementById('color').value = color;
-            
-            // Smooth scroll to form
-            document.getElementById('searchForm').scrollIntoView({ behavior: 'smooth' });
+        let uploadedFile = null;
+        let aiAnalysisData = null;
+
+        // Tab switching
+        function switchTab(tab) {
+            const imageSection = document.getElementById('imageSearchSection');
+            const textSection = document.getElementById('textSearchSection');
+            const imageBtn = document.getElementById('imageTabBtn');
+            const textBtn = document.getElementById('textTabBtn');
+
+            if (tab === 'image') {
+                imageSection.classList.remove('hidden');
+                textSection.classList.add('hidden');
+                imageBtn.classList.add('active');
+                textBtn.classList.remove('active');
+            } else {
+                imageSection.classList.add('hidden');
+                textSection.classList.remove('hidden');
+                imageBtn.classList.remove('active');
+                textBtn.classList.add('active');
+            }
         }
 
-        // Main search form handler
+        // Upload zone functionality
+        const uploadZone = document.getElementById('uploadZone');
+        const imageInput = document.getElementById('imageInput');
+
+        uploadZone.addEventListener('click', () => imageInput.click());
+
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        });
+
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('dragover');
+        });
+
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            handleFileUpload(file);
+        });
+
+        imageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            handleFileUpload(file);
+        });
+
+        function handleFileUpload(file) {
+            if (!file || !file.type.startsWith('image/')) {
+                alert('Please upload a valid image file');
+                return;
+            }
+
+            uploadedFile = file;
+            
+            // Show preview
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById('previewImg').src = e.target.result;
+                document.getElementById('imagePreview').classList.remove('hidden');
+                document.getElementById('uploadZone').classList.add('hidden');
+            };
+            reader.readAsDataURL(file);
+
+            // Analyze image
+            analyzeImage(file);
+        }
+
+        function clearImage() {
+            uploadedFile = null;
+            aiAnalysisData = null;
+            document.getElementById('imagePreview').classList.add('hidden');
+            document.getElementById('uploadZone').classList.remove('hidden');
+            document.getElementById('aiAnalysis').classList.add('hidden');
+            document.getElementById('imageFilters').classList.add('hidden');
+            document.getElementById('imageSearchBtn').classList.add('hidden');
+            imageInput.value = '';
+        }
+
+        async function analyzeImage(file) {
+            try {
+                const formData = new FormData();
+                formData.append('file', file);
+
+                const response = await fetch('http://localhost:8000/api/analyze-image', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) throw new Error('Analysis failed');
+
+                const data = await response.json();
+                aiAnalysisData = data.analysis;
+
+                displayAnalysis(data.analysis);
+                document.getElementById('imageFilters').classList.remove('hidden');
+                document.getElementById('imageSearchBtn').classList.remove('hidden');
+
+            } catch (error) {
+                console.error('Analysis error:', error);
+                alert('Failed to analyze image. Please try again.');
+            }
+        }
+
+        function displayAnalysis(analysis) {
+            const content = document.getElementById('analysisContent');
+            content.innerHTML = `
+                <div class="text-center">
+                    <div class="text-2xl mb-1">${getCategoryIcon(analysis.category)}</div>
+                    <div class="font-semibold text-gray-700">${analysis.category}</div>
+                    <div class="text-sm text-gray-500">Category</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl mb-1">🎨</div>
+                    <div class="font-semibold text-gray-700">${analysis.color}</div>
+                    <div class="text-sm text-gray-500">Color</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl mb-1">✨</div>
+                    <div class="font-semibold text-gray-700">${analysis.pattern}</div>
+                    <div class="text-sm text-gray-500">Pattern</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl mb-1">👔</div>
+                    <div class="font-semibold text-gray-700">${analysis.style}</div>
+                    <div class="text-sm text-gray-500">Style</div>
+                </div>
+            `;
+            document.getElementById('aiAnalysis').classList.remove('hidden');
+        }
+
+        function getCategoryIcon(category) {
+            const icons = {
+                'dresses': '👗',
+                'tops': '👚',
+                'jeans': '👖',
+                'shoes': '👟',
+                'kurtas': '🥻',
+                'shirts': '👔',
+                'sarees': '🥻'
+            };
+            return icons[category] || '👕';
+        }
+
+        async function searchByImage() {
+            if (!uploadedFile) return;
+
+            const formData = new FormData();
+            formData.append('file', uploadedFile);
+            formData.append('brand', document.getElementById('imageBrand').value || '');
+            formData.append('max_price', document.getElementById('imageMaxPrice').value || '');
+
+            showResults();
+            document.getElementById('loadingText').textContent = 'Searching across stores...';
+
+            try {
+                const response = await fetch('http://localhost:8000/api/search-by-image', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) throw new Error('Search failed');
+
+                const data = await response.json();
+                
+                document.getElementById('loadingIndicator').classList.add('hidden');
+                document.getElementById('resultCount').textContent = 
+                    `Found ${data.products.length} products - AI detected: ${data.ai_analysis.description}`;
+
+                if (data.products.length === 0) {
+                    document.getElementById('noResults').classList.remove('hidden');
+                } else {
+                    displayResults(data.products);
+                }
+
+            } catch (error) {
+                console.error('Search error:', error);
+                document.getElementById('loadingIndicator').classList.add('hidden');
+                document.getElementById('errorMessage').classList.remove('hidden');
+                document.getElementById('errorText').textContent = error.message;
+            }
+        }
+
+        // Text search
         document.getElementById('searchForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            // Get form values
             const filters = {
                 name: document.getElementById('productName').value.trim(),
                 brand: document.getElementById('brand').value.trim() || null,
@@ -434,178 +495,82 @@
                 max_price: document.getElementById('maxPrice').value ? parseFloat(document.getElementById('maxPrice').value) : null
             };
             
-            // Show results section and loading indicator
-            const resultsSection = document.getElementById('resultsSection');
-            resultsSection.classList.remove('hidden');
-            resultsSection.scrollIntoView({ behavior: 'smooth' });
-            
-            document.getElementById('loadingIndicator').classList.remove('hidden');
-            document.getElementById('resultsGrid').innerHTML = '';
-            document.getElementById('noResults').classList.add('hidden');
-            document.getElementById('errorMessage').classList.add('hidden');
+            showResults();
             
             try {
-                console.log('Searching with filters:', filters);
-                
-                // Call the backend API
                 const response = await fetch('http://localhost:8000/api/search', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(filters)
                 });
                 
-                console.log('Response status:', response.status);
-                
-                if (!response.ok) {
-                    const errorData = await response.json().catch(() => ({}));
-                    throw new Error(errorData.detail || `Server error: ${response.status}`);
-                }
+                if (!response.ok) throw new Error('Search failed');
                 
                 const results = await response.json();
-                console.log('Results received:', results.length);
                 
-                // Hide loading indicator
                 document.getElementById('loadingIndicator').classList.add('hidden');
-                
-                // Update result count
                 document.getElementById('resultCount').textContent = 
-                    `Found ${results.length} product${results.length !== 1 ? 's' : ''} across multiple stores`;
+                    `Found ${results.length} product${results.length !== 1 ? 's' : ''}`;
                 
                 if (results.length === 0) {
                     document.getElementById('noResults').classList.remove('hidden');
-                    return;
+                } else {
+                    displayResults(results);
                 }
-                
-                // Display results
-                displayResults(results);
                 
             } catch (error) {
                 console.error('Error:', error);
                 document.getElementById('loadingIndicator').classList.add('hidden');
                 document.getElementById('errorMessage').classList.remove('hidden');
-                document.getElementById('errorText').textContent = 
-                    error.message || 'Failed to load products. Please check if the backend server is running on localhost:8000';
+                document.getElementById('errorText').textContent = error.message;
             }
         });
 
+        function showResults() {
+            document.getElementById('resultsSection').classList.remove('hidden');
+            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('loadingIndicator').classList.remove('hidden');
+            document.getElementById('resultsGrid').innerHTML = '';
+            document.getElementById('noResults').classList.add('hidden');
+            document.getElementById('errorMessage').classList.add('hidden');
+        }
+
         function displayResults(results) {
-            const resultsGrid = document.getElementById('resultsGrid');
-            resultsGrid.innerHTML = '';
+            const grid = document.getElementById('resultsGrid');
+            grid.innerHTML = '';
             
-            results.forEach((product, index) => {
-                const productCard = document.createElement('div');
-                productCard.className = 'product-card bg-white rounded-xl shadow-md overflow-hidden';
-                productCard.style.animationDelay = `${index * 0.05}s`;
+            results.forEach((product, i) => {
+                const card = document.createElement('div');
+                card.className = 'product-card bg-white rounded-xl shadow-md overflow-hidden';
+                card.style.animationDelay = `${i * 0.05}s`;
                 
-                // Format price
-                const formattedPrice = new Intl.NumberFormat('en-IN', {
-                    style: 'currency',
-                    currency: 'INR',
-                    maximumFractionDigits: 0
-                }).format(product.price);
+                const price = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(product.price);
                 
-                // Original price HTML
-                let originalPriceHtml = '';
-                if (product.original_price && product.original_price > product.price) {
-                    const formattedOriginalPrice = new Intl.NumberFormat('en-IN', {
-                        style: 'currency',
-                        currency: 'INR',
-                        maximumFractionDigits: 0
-                    }).format(product.original_price);
-                    originalPriceHtml = `
-                        <span class="text-sm text-gray-500 line-through ml-2">
-                            ${formattedOriginalPrice}
-                        </span>
-                    `;
-                }
-                
-                // Discount badge
-                let discountHtml = '';
-                if (product.discount_percentage && product.discount_percentage > 0) {
-                    discountHtml = `
-                        <div class="discount-badge">
-                            ${product.discount_percentage}% OFF
+                card.innerHTML = `
+                    <div class="relative h-64 bg-gray-100">
+                        <img src="${product.image_url || 'https://via.placeholder.com/400x500?text=No+Image'}" 
+                             alt="${product.title}" 
+                             class="w-full h-full object-cover"
+                             onerror="this.src='https://via.placeholder.com/400x500?text=No+Image'">
+                        <div class="absolute top-2 left-2 ${product.store_color} text-white px-3 py-1 rounded text-xs font-bold">
+                            ${product.store_name}
                         </div>
-                    `;
-                }
-                
-                // Rating HTML
-                let ratingHtml = '';
-                if (product.rating) {
-                    const fullStars = Math.floor(product.rating);
-                    const hasHalfStar = product.rating % 1 >= 0.5;
-                    const emptyStars = 5 - Math.ceil(product.rating);
-                    
-                    let starsHtml = '★'.repeat(fullStars);
-                    if (hasHalfStar) starsHtml += '☆';
-                    starsHtml += '☆'.repeat(emptyStars);
-                    
-                    ratingHtml = `
-                        <div class="flex items-center mt-2">
-                            <span class="rating-stars text-sm">${starsHtml}</span>
-                            <span class="text-gray-600 text-sm ml-1">(${product.rating})</span>
-                        </div>
-                    `;
-                }
-                
-                // Product URL
-                const productUrl = product.product_url || '#';
-                const hasValidUrl = productUrl !== '#' && productUrl !== '';
-                
-                productCard.innerHTML = `
-                    <div class="image-container h-64">
-                        <img 
-                            src="${product.image_url || 'https://via.placeholder.com/400x500?text=No+Image'}" 
-                            alt="${product.title}" 
-                            class="w-full h-full object-cover"
-                            onerror="this.src='https://via.placeholder.com/400x500?text=No+Image'"
-                        >
-                        <div class="store-badge ${product.store_color}">
-                            <i class="fas fa-store mr-1"></i>${product.store_name}
-                        </div>
-                        ${discountHtml}
+                        ${product.discount_percentage ? `<div class="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 rounded text-xs font-bold">${product.discount_percentage}% OFF</div>` : ''}
                     </div>
                     <div class="p-5">
-                        <h3 class="font-bold text-lg text-gray-800 line-clamp-2 mb-3 min-h-[3.5rem]" title="${product.title}">
-                            ${product.title}
-                        </h3>
-                        
-                        <div class="flex items-baseline mb-2">
-                            <span class="text-2xl font-bold text-gray-900">${formattedPrice}</span>
-                            ${originalPriceHtml}
-                        </div>
-                        
-                        ${ratingHtml}
-                        
-                        <div class="mt-4 pt-4 border-t border-gray-100 flex justify-between items-center">
-                            ${hasValidUrl ? 
-                                `<a 
-                                    href="${productUrl}" 
-                                    target="_blank" 
-                                    rel="noopener noreferrer" 
-                                    class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-all flex items-center"
-                                >
-                                    <i class="fas fa-external-link-alt mr-2"></i>View Deal
-                                </a>` :
-                                `<span class="text-gray-400 text-sm">Link unavailable</span>`
-                            }
-                            <span class="text-xs text-gray-500 flex items-center">
-                                <i class="fas fa-shipping-fast mr-1"></i>
-                                ${product.shipping_info || 'Check shipping'}
-                            </span>
-                        </div>
+                        <h3 class="font-bold text-lg text-gray-800 mb-3 line-clamp-2 min-h-[3.5rem]">${product.title}</h3>
+                        <div class="text-2xl font-bold text-gray-900 mb-4">${price}</div>
+                        ${product.rating ? `<div class="flex items-center mb-4"><span class="text-yellow-500">★</span><span class="ml-1 text-sm">${product.rating}</span></div>` : ''}
+                        <a href="${product.product_url}" target="_blank" 
+                           class="block gradient-bg text-white text-center font-semibold px-4 py-2 rounded-lg hover:shadow-lg transition-all">
+                            <i class="fas fa-external-link-alt mr-2"></i>View Deal
+                        </a>
                     </div>
                 `;
                 
-                resultsGrid.appendChild(productCard);
+                grid.appendChild(card);
             });
         }
-
-        // Log when page loads
-        console.log('Fashion Price Comparison App loaded');
-        console.log('Backend API should be running on http://localhost:8000');
     </script>
 </body>
 </html>
