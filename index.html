@@ -448,8 +448,13 @@
 
             const formData = new FormData();
             formData.append('file', uploadedFile);
-            formData.append('brand', document.getElementById('imageBrand').value || '');
-            formData.append('max_price', document.getElementById('imageMaxPrice').value || '');
+            
+            // Add optional filters as form data
+            const brand = document.getElementById('imageBrand').value;
+            const maxPrice = document.getElementById('imageMaxPrice').value;
+            
+            if (brand) formData.append('brand', brand);
+            if (maxPrice) formData.append('max_price', maxPrice);
 
             showResults();
             document.getElementById('loadingText').textContent = 'Searching across stores...';
@@ -458,15 +463,19 @@
                 const response = await fetch('http://localhost:8000/api/search-by-image', {
                     method: 'POST',
                     body: formData
+                    // Don't set Content-Type header - let browser set it with boundary
                 });
 
-                if (!response.ok) throw new Error('Search failed');
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.detail || 'Search failed');
+                }
 
                 const data = await response.json();
                 
                 document.getElementById('loadingIndicator').classList.add('hidden');
                 document.getElementById('resultCount').textContent = 
-                    `Found ${data.products.length} products - AI detected: ${data.ai_analysis.description}`;
+                    console.log(`Found ${data.products.length} products - AIdetected: ${data.ai_analysis.description}`);
 
                 if (data.products.length === 0) {
                     document.getElementById('noResults').classList.remove('hidden');
@@ -478,7 +487,7 @@
                 console.error('Search error:', error);
                 document.getElementById('loadingIndicator').classList.add('hidden');
                 document.getElementById('errorMessage').classList.remove('hidden');
-                document.getElementById('errorText').textContent = error.message;
+                document.getElementById('errorText').textContent = error.message || 'Search failed. Please try again.';
             }
         }
 
