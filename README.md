@@ -20,6 +20,7 @@ The backend handles the core logic, while the frontend provides an interactive U
 
 
 
+
 TECH STACK
 
 Frontend :
@@ -42,6 +43,7 @@ External API (via PROXY\_TOKEN)
 
 
 
+
 📂 PROJECT STRUCTURE
 
 ├── ai\_model.py
@@ -55,6 +57,7 @@ External API (via PROXY\_TOKEN)
 ├── env/
 
 └── README.md
+
 
 
 
@@ -90,6 +93,7 @@ The web application will open in your browser.
 
 
 
+
 🧪 HOW TO USE
 
 Enter text or upload an image via the web interface
@@ -99,6 +103,7 @@ Submit the input
 The backend processes the request
 
 Results are displayed dynamically on the webpage
+
 
 
 
@@ -112,6 +117,7 @@ Designed for local development and testing
 
 
 
+
 🐞 TROUBLESHOOTING
 
 Upgrade pip if installation fails:
@@ -121,4 +127,5 @@ pip install --upgrade pip
 Ensure Live Server extension is installed in VS Code
 
 Check terminal logs if backend responses are not received
+
 
