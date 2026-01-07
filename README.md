@@ -65,15 +65,19 @@ External API (via PROXY\_TOKEN)
 
 1️⃣Extract the folder from the zip file and open in VSCode.
 
-2️⃣ Create \& Activate Virtual Environment Windows- python -m venv venv ,then type- .\venv\Scripts\Activate
+2️⃣ Create \& Activate Virtual Environment 
 
-    macOS / Linux python3- -m venv env source env/bin/activate
+Windows- python -m venv venv ,then type- .\venv\Scripts\Activate
+
+macOS / Linux python3- -m venv env source env/bin/activate
 
 3️⃣ Install Dependencies pip install -r requirements.txt
 
-4️⃣ Set Environment Variable Windows (PowerShell) $env:PROXY_TOKEN="f1d8dd1d711149c5bdc00bf93504aad19430dbf5798"
+4️⃣ Set Environment Variable 
 
-    macOS / Linux export PROXY_TOKEN="f1d8dd1d711149c5bdc00bf93504aad19430dbf5798"
+Windows (PowerShell) $env:PROXY_TOKEN="f1d8dd1d711149c5bdc00bf93504aad19430dbf5798"
+
+macOS / Linux export PROXY_TOKEN="f1d8dd1d711149c5bdc00bf93504aad19430dbf5798"
 
 ⚠️ Do not expose this token publicly in production environments.
 
@@ -127,5 +131,6 @@ pip install --upgrade pip
 Ensure Live Server extension is installed in VS Code
 
 Check terminal logs if backend responses are not received
+
 
 
