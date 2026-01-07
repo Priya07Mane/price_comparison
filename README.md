@@ -83,7 +83,7 @@ macOS / Linux export PROXY_TOKEN="f1d8dd1d711149c5bdc00bf93504aad19430dbf5798"
 
 5️⃣ Start the Backend Server python main.py
 
-    Ensure the backend starts without errors and remains running.
+Ensure the backend starts without errors and remains running.
 
 6️⃣ Launch the Frontend
 
@@ -131,6 +131,7 @@ pip install --upgrade pip
 Ensure Live Server extension is installed in VS Code
 
 Check terminal logs if backend responses are not received
+
 
 
 
