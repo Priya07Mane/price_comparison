@@ -67,21 +67,42 @@ External API (via PROXY\_TOKEN)
 
 2️⃣ Create \& Activate Virtual Environment 
 
-Windows- python -m venv venv ,then type- .\venv\Scripts\Activate
+Windows- 
+```
+python -m venv venv
+```
+then type- 
+```
+.\venv\Scripts\Activate
+```
+macOS / Linux 
+```
+python3- -m venv env source env/bin/activate
+```
 
-macOS / Linux python3- -m venv env source env/bin/activate
-
-3️⃣ Install Dependencies pip install -r requirements.txt
+3️⃣ Install Dependencies-
+```
+pip install -r requirements.txt
+```
 
 4️⃣ Set Environment Variable 
 
-Windows (PowerShell) $env:PROXY_TOKEN="f1d8dd1d711149c5bdc00bf93504aad19430dbf5798"
+Windows (PowerShell) 
+```
+$env:PROXY_TOKEN="f1d8dd1d711149c5bdc00bf93504aad19430dbf5798"
+```
 
-macOS / Linux export PROXY_TOKEN="f1d8dd1d711149c5bdc00bf93504aad19430dbf5798"
+macOS / Linux 
+```
+export PROXY_TOKEN="f1d8dd1d711149c5bdc00bf93504aad19430dbf5798"
+```
 
 ⚠️ Do not expose this token publicly in production environments.
 
-5️⃣ Start the Backend Server python main.py
+5️⃣ Start the Backend Server -
+```
+python main.py
+```
 
 Ensure the backend starts without errors and remains running.
 
